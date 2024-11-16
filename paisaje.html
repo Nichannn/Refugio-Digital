@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+  </head>
+  <body>
+    <a-scene>
+      <!-- Cielo -->
+      <a-sky color="#88ccee"></a-sky>
+
+      <!-- Montañas -->
+      <a-cone position="-3 0.5 -6" radius-bottom="3" height="3" color="#8B4513"></a-cone>
+      <a-cone position="3 0.5 -8" radius-bottom="4" height="4" color="#6B8E23"></a-cone>
+
+      <!-- Árbol -->
+      <a-cylinder position="0 0.5 -4" radius="0.2" height="1" color="#8B4513"></a-cylinder>
+      <a-sphere position="0 1.5 -4" radius="0.5" color="#228B22"></a-sphere>
+
+      <!-- Agua -->
+      <a-plane position="0 0 -10" rotation="-90 0 0" width="20" height="10" color="#4682B4"></a-plane>
+
+      <!-- Tierra -->
+      <a-plane position="0 0 0" rotation="-90 0 0" width="10" height="10" color="#7BC8A4"></a-plane>
+    </a-scene>
+  </body>
+</html>

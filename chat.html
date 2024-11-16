@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Anónimo</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        // Conectar con el servidor cuando se cargue la página
+        var socket = io();
+
+        // Escuchar el historial de mensajes del servidor
+        socket.on('load messages', function(history) {
+            history.forEach(function(msg) {
+                var messages = document.getElementById('messages');
+                var newMessage = document.createElement('li');
+                newMessage.textContent = msg;
+                messages.appendChild(newMessage);
+            });
+        });
+
+        // Enviar mensaje cuando el formulario se envíe
+        function sendMessage(event) {
+            event.preventDefault();
+            var input = document.getElementById('message');
+            var msg = input.value;
+            socket.emit('chat message', msg);
+            input.value = ''; // Limpiar el campo de texto
+            return false;
+        }
+
+        // Escuchar mensajes del servidor
+        socket.on('chat message', function(msg) {
+            var messages = document.getElementById('messages');
+            var newMessage = document.createElement('li');
+            newMessage.textContent = msg;
+            messages.appendChild(newMessage);
+            
+            // Mostrar una notificación
+            alert('Nuevo mensaje: ' + msg); // Puedes personalizar esto
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Chat Anónimo</h1>
+        <p>Habla con nosotros de forma anónima.</p>
+    </header>
+
+    <main>
+        <ul id="messages"></ul>
+        <form onsubmit="sendMessage(event)">
+            <input id="message" autocomplete="off" placeholder="Escribe un mensaje..."/>
+            <button type="submit">Enviar</button>
+        </form>
+    </main>
+
+    <footer>
+        <p>© 2024 Soporte para Jóvenes</p>
+    </footer>
+</body>
+</html>
