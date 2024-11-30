@@ -5,49 +5,32 @@
   </head>
   <body>
     <a-scene>
-      <!-- Cielo dinámico -->
+      <!-- Activos -->
       <a-assets>
         <img id="day" src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/sechelt.jpg">
         <img id="night" src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/moon.jpg">
         <audio id="forestSound" src="https://www.soundjay.com/nature/sounds/forest-rain-1.mp3"></audio>
-        <audio id="meditationGuide" src="https://www.soundjay.com/button/sounds/button-29.mp3"></audio>
       </a-assets>
 
+      <!-- Cielo dinámico -->
       <a-sky id="sky" src="#day"></a-sky>
 
-      <!-- Paisaje básico -->
+      <!-- Elementos del entorno -->
       <a-plane position="0 0 -4" rotation="-90 0 0" width="10" height="10" color="#7BC8A4"></a-plane>
+      <a-sphere position="0 1.5 -4" radius="0.5" color="#228B22" onclick="showMessage()"></a-sphere>
 
-      <!-- Árbol interactivo -->
-      <a-cylinder position="0 0.5 -4" radius="0.2" height="1" color="#8B4513"></a-cylinder>
-      <a-sphere position="0 1.5 -4" radius="0.5" color="#228B22" id="tree" onclick="showMessage()"></a-sphere>
-
-      <!-- Botón para cambiar el cielo -->
+      <!-- Botón interactivo -->
       <a-plane position="0 1 -2" width="2" height="1" color="#8BC34A" onclick="changeSky()">
         <a-text value="Cambiar Paisaje" align="center"></a-text>
       </a-plane>
 
-      <!-- Botón para iniciar meditación -->
-      <a-plane position="0 -0.5 -2" width="2" height="1" color="#2196F3" onclick="playMeditation()">
-        <a-text value="Iniciar Meditación" align="center"></a-text>
-      </a-plane>
-
-      <!-- Mensaje interactivo -->
-      <a-entity id="message" position="0 2 -4" visible="false">
-        <a-text value="Respira profundamente..." align="center" color="#FFF"></a-text>
-      </a-entity>
-
-      <!-- Sonidos de ambiente -->
-      <a-entity sound="src: #forestSound; autoplay: true; loop: true"></a-entity>
-
-      <!-- Cámara con cursor -->
-      <a-entity camera>
-        <a-cursor></a-cursor>
+      <!-- Cámara con giroscopio -->
+      <a-entity camera look-controls wasd-controls>
+        <a-cursor></a-cursor> <!-- Cursor interactivo -->
       </a-entity>
     </a-scene>
 
     <script>
-      // Cambiar cielo entre día y noche
       let sky = document.querySelector('#sky');
       let currentScene = 'day';
 
@@ -56,19 +39,8 @@
         sky.setAttribute('src', '#' + currentScene);
       }
 
-      // Mostrar mensaje en el árbol
       function showMessage() {
-        let message = document.querySelector('#message');
-        message.setAttribute('visible', true);
-        setTimeout(() => {
-          message.setAttribute('visible', false);
-        }, 3000); // Desaparece después de 3 segundos
-      }
-
-      // Reproducir guía de meditación
-      function playMeditation() {
-        let meditationSound = document.querySelector('#meditationGuide');
-        meditationSound.play();
+        alert("¡Respira profundamente!");
       }
     </script>
   </body>
