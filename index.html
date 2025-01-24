@@ -9,22 +9,36 @@
       <a-assets>
         <img id="day" src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/sechelt.jpg">
         <img id="night" src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/moon.jpg">
+        <img id="grass" src="https://cdn.aframe.io/a-painter/images/floor.jpg">
         <audio id="forestSound" src="https://www.soundjay.com/nature/sounds/forest-rain-1.mp3"></audio>
+        <a-asset-item id="tree" src="https://cdn.aframe.io/test-models/models/gltf/tree/scene.gltf"></a-asset-item>
       </a-assets>
 
       <!-- Cielo dinámico -->
       <a-sky id="sky" src="#day"></a-sky>
 
-      <!-- Elementos del entorno -->
-      <a-plane position="0 0 -4" rotation="-90 0 0" width="10" height="10" color="#7BC8A4"></a-plane>
-      <a-sphere position="0 1.5 -4" radius="0.5" color="#228B22" onclick="showMessage()"></a-sphere>
+      <!-- Iluminación -->
+      <a-light type="ambient" color="#888"></a-light>
+      <a-light type="directional" position="-2 4 3" intensity="1.5"></a-light>
 
-      <!-- Botón interactivo -->
+      <!-- Suelo con textura -->
+      <a-plane position="0 0 -4" rotation="-90 0 0" width="15" height="15" src="#grass" repeat="5 5"></a-plane>
+
+      <!-- Árboles -->
+      <a-entity gltf-model="#tree" position="-2 0 -6" scale="1 1 1"></a-entity>
+      <a-entity gltf-model="#tree" position="2 0 -7" scale="1.2 1.2 1.2"></a-entity>
+
+      <!-- Esfera interactiva -->
+      <a-sphere position="0 1.5 -4" radius="0.5" color="#228B22" onclick="showMessage()">
+        <a-animation attribute="scale" to="1.2 1.2 1.2" direction="alternate" dur="1000" repeat="indefinite"></a-animation>
+      </a-sphere>
+
+      <!-- Botón interactivo para cambiar el cielo -->
       <a-plane position="0 1 -2" width="2" height="1" color="#8BC34A" onclick="changeSky()">
         <a-text value="Cambiar Paisaje" align="center"></a-text>
       </a-plane>
 
-      <!-- Cámara con giroscopio -->
+      <!-- Cámara con controles -->
       <a-entity camera look-controls wasd-controls>
         <a-cursor></a-cursor> <!-- Cursor interactivo -->
       </a-entity>
