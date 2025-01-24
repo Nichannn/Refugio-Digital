@@ -10,27 +10,52 @@
         <img id="day" src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/sechelt.jpg">
         <img id="night" src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/moon.jpg">
         <img id="grass" src="https://cdn.aframe.io/a-painter/images/floor.jpg">
-        <audio id="forestSound" src="https://www.soundjay.com/nature/sounds/forest-rain-1.mp3"></audio>
+        <img id="water" src="https://cdn.aframe.io/a-painter/images/water.jpg">
+        <audio id="forestSound" src="https://www.soundjay.com/nature/sounds/forest-rain-1.mp3" preload="auto"></audio>
+        <audio id="fireSound" src="https://www.soundjay.com/fireplace/sounds/fireplace-crackling-1.mp3" preload="auto"></audio>
         <a-asset-item id="tree" src="https://cdn.aframe.io/test-models/models/gltf/tree/scene.gltf"></a-asset-item>
+        <a-asset-item id="rock" src="https://cdn.aframe.io/test-models/models/gltf/rock/scene.gltf"></a-asset-item>
       </a-assets>
 
       <!-- Cielo dinámico -->
       <a-sky id="sky" src="#day"></a-sky>
 
       <!-- Iluminación -->
-      <a-light type="ambient" color="#888"></a-light>
-      <a-light type="directional" position="-2 4 3" intensity="1.5"></a-light>
+      <a-light id="ambientLight" type="ambient" color="#888"></a-light>
+      <a-light id="directionalLight" type="directional" position="-2 4 3" intensity="1.5"></a-light>
 
       <!-- Suelo con textura -->
       <a-plane position="0 0 -4" rotation="-90 0 0" width="15" height="15" src="#grass" repeat="5 5"></a-plane>
 
-      <!-- Árboles -->
-      <a-entity gltf-model="#tree" position="-2 0 -6" scale="1 1 1"></a-entity>
-      <a-entity gltf-model="#tree" position="2 0 -7" scale="1.2 1.2 1.2"></a-entity>
+      <!-- Río animado -->
+      <a-plane position="0 0.02 -6" rotation="-90 0 0" width="6" height="2" src="#water" repeat="4 4"
+               material="shader: flat; transparent: true; opacity: 0.8">
+        <a-animation attribute="position" from="0 0.02 -6" to="0 0.02 -5.8" direction="alternate" dur="2000" repeat="indefinite"></a-animation>
+      </a-plane>
+
+      <!-- Árboles y rocas -->
+      <a-entity gltf-model="#tree" position="-2 0 -7" scale="1 1 1"></a-entity>
+      <a-entity gltf-model="#tree" position="3 0 -8" scale="1.2 1.2 1.2"></a-entity>
+      <a-entity gltf-model="#rock" position="-1 0 -5" scale="0.5 0.5 0.5"></a-entity>
+      <a-entity gltf-model="#rock" position="2 0 -6" scale="0.7 0.7 0.7"></a-entity>
+
+      <!-- Fogata con partículas -->
+      <a-entity position="0 0 -4">
+        <a-light type="point" intensity="2" color="#FF6600" distance="5"></a-light>
+        <a-entity geometry="primitive: cone; radiusBottom: 0.5; height: 0.7" material="color: #993300" position="0 0 0"></a-entity>
+        <a-entity geometry="primitive: sphere; radius: 0.3" material="color: #FF4500; opacity: 0.8" position="0 0.5 0">
+          <a-animation attribute="scale" from="0.8 0.8 0.8" to="1.2 1.2 1.2" direction="alternate" dur="500" repeat="indefinite"></a-animation>
+          <a-animation attribute="position" from="0 0.5 0" to="0 0.8 0" direction="alternate" dur="500" repeat="indefinite"></a-animation>
+        </a-entity>
+      </a-entity>
+
+      <!-- Sonidos ambientales -->
+      <a-sound src="#forestSound" autoplay="true" loop="true" position="0 1.5 0"></a-sound>
+      <a-sound src="#fireSound" autoplay="true" loop="true" position="0 0 -4"></a-sound>
 
       <!-- Esfera interactiva -->
       <a-sphere position="0 1.5 -4" radius="0.5" color="#228B22" onclick="showMessage()">
-        <a-animation attribute="scale" to="1.2 1.2 1.2" direction="alternate" dur="1000" repeat="indefinite"></a-animation>
+        <a-animation attribute="scale" from="1 1 1" to="1.2 1.2 1.2" direction="alternate" dur="1000" repeat="indefinite"></a-animation>
       </a-sphere>
 
       <!-- Botón interactivo para cambiar el cielo -->
@@ -40,21 +65,32 @@
 
       <!-- Cámara con controles -->
       <a-entity camera look-controls wasd-controls>
-        <a-cursor></a-cursor> <!-- Cursor interactivo -->
+        <a-cursor></a-cursor>
       </a-entity>
     </a-scene>
 
     <script>
       let sky = document.querySelector('#sky');
+      let ambientLight = document.querySelector('#ambientLight');
+      let directionalLight = document.querySelector('#directionalLight');
       let currentScene = 'day';
 
       function changeSky() {
-        currentScene = (currentScene === 'day') ? 'night' : 'day';
-        sky.setAttribute('src', '#' + currentScene);
+        if (currentScene === 'day') {
+          currentScene = 'night';
+          sky.setAttribute('src', '#night');
+          ambientLight.setAttribute('color', '#444');
+          directionalLight.setAttribute('intensity', '0.5');
+        } else {
+          currentScene = 'day';
+          sky.setAttribute('src', '#day');
+          ambientLight.setAttribute('color', '#888');
+          directionalLight.setAttribute('intensity', '1.5');
+        }
       }
 
       function showMessage() {
-        alert("¡Respira profundamente!");
+        alert("¡Respira profundamente y disfruta el entorno!");
       }
     </script>
   </body>
